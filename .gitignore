@@ -1,0 +1,15 @@
+# Maelstrom/Jepsen run output
+store/
+
+# Maelstrom itself, if downloaded or unpacked here
+maelstrom/
+maelstrom.tar.bz2
+
+# Binaries from `go build`, named after the module
+/maelstrom-*/maelstrom-*
+
+# Go test and profile output
+*.test
+*.out
+
+.DS_Store
