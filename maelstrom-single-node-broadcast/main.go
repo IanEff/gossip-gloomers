@@ -25,6 +25,8 @@ func (l *Log) Add(value int64) {
 }
 
 func (l *Log) GetAll() []int64 {
+	l.mu.RLock()
+	defer l.mu.RUnlock()
 	return l.Messages
 }
 
@@ -63,9 +65,7 @@ func main() {
 			return err
 		}
 
-		l.mu.Lock()
-		defer l.mu.Unlock()
-		l.Add(body["message"].(int64))
+		l.Add(int64(body["message"].(float64)))
 
 		body["type"] = "broadcast_ok"
 
@@ -77,8 +77,6 @@ func main() {
 		if err := json.Unmarshal(msg.Body, &body); err != nil {
 			return err
 		}
-		l.mu.RLock()
-		defer l.mu.RUnlock()
 		body["type"] = "read_ok"
 		body["messages"] = l.GetAll()
 
